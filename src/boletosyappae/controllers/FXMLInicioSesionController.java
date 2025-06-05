@@ -1,90 +1,107 @@
 package boletosyappae.controllers;
 
-import boletosyappae.models.dao.InicioSesionDAO;
-import boletosyappae.models.pojo.Empleado;
+import boletosyappae.models.dao.EmpleadoDAO;
+import boletosyappae.models.pojo.Administrativo;
 import boletosyappae.exceptions.CredencialesInvalidasException;
-import boletosyappae.exceptions.EmpleadoNoEncontradoException;
+import boletosyappae.utils.Utilidad;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class FXMLInicioSesionController {
+public class FXMLInicioSesionController implements Initializable {
 
-    @FXML
-    private TextField txtUsuario;
+    @FXML private TextField tfUsuario;
+    @FXML private PasswordField pfContrasena;
+    @FXML private Button btnIniciarSesion;
+    @FXML private Label lblMensaje;
 
-    @FXML
-    private PasswordField txtContraseña;
+    private EmpleadoDAO empleadoDAO;
 
-    @FXML
-    private Button btnIniciarSesion;
-
-    @FXML
-    private Label lblMensaje;
-
-    private InicioSesionDAO inicioSesionDAO;
-
-    public void initialize() {
-        inicioSesionDAO = new InicioSesionDAO();
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        empleadoDAO = new EmpleadoDAO();
+        lblMensaje.setText("");
     }
 
     @FXML
     private void iniciarSesion(ActionEvent event) {
-        String usuario = txtUsuario.getText().trim();
-        String contraseña = txtContraseña.getText();
+        String usuario = tfUsuario.getText().trim();
+        String contrasena = pfContrasena.getText();
+
+        if (usuario.isEmpty() || contrasena.isEmpty()) {
+            mostrarMensaje("Por favor, ingrese usuario y contraseña", true);
+            return;
+        }
 
         try {
-            Empleado empleadoAutenticado = inicioSesionDAO.autenticarEmpleado(usuario, contraseña);
+            // Only Administrativo employees can log in
+            Administrativo adminAutenticado = empleadoDAO.autenticarUsuario(usuario, contrasena);
 
-            // Guardar empleado en sesión (puedes usar una clase Session)
-            // Session.setEmpleadoActual(empleadoAutenticado);
+            if (adminAutenticado != null) {
+                mostrarMensaje("Inicio de sesión exitoso", false);
+                abrirVentanaPrincipal(adminAutenticado);
+            }
 
-            // Abrir ventana principal
-            abrirVentanaPrincipal(empleadoAutenticado);
-
-        } catch (CredencialesInvalidasException | EmpleadoNoEncontradoException e) {
-            mostrarError(e.getMessage());
+        } catch (CredencialesInvalidasException e) {
+            mostrarMensaje(e.getMessage(), true);
+            limpiarCampos();
         } catch (Exception e) {
-            mostrarError("Error inesperado: " + e.getMessage());
+            mostrarMensaje("Error al iniciar sesión: " + e.getMessage(), true);
+            e.printStackTrace();
         }
     }
 
-    private void abrirVentanaPrincipal(Empleado empleado) {
+    private void abrirVentanaPrincipal(Administrativo empleadoAutenticado) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/boletosyappae/views/FXMLVentanaPrincipal.fxml"));
             Parent root = loader.load();
 
-            // Pasar el empleado al controller de la ventana principal
             FXMLVentanaPrincipalController controller = loader.getController();
-            controller.set(empleado);
+            controller.inicializarSesion(empleadoAutenticado);
 
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.setTitle("Sistema UniAir - " + empleado.getNombre());
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
+            stage.setTitle("BoletosYa - Sistema Principal");
             stage.show();
 
-            // Cerrar ventana de login
-            ((Stage) btnIniciarSesion.getScene().getWindow()).close();
+            // Close login window
+            Stage loginStage = (Stage) btnIniciarSesion.getScene().getWindow();
+            loginStage.close();
 
         } catch (IOException e) {
-            mostrarError("Error al abrir la ventana principal: " + e.getMessage());
+            mostrarMensaje("Error al abrir la ventana principal: " + e.getMessage(), true);
+            e.printStackTrace();
         }
     }
 
-    private void mostrarError(String mensaje) {
+    private void mostrarMensaje(String mensaje, boolean esError) {
         lblMensaje.setText(mensaje);
-        lblMensaje.setStyle("-fx-text-fill: red;");
+        if (esError) {
+            lblMensaje.setStyle("-fx-text-fill: red;");
+        } else {
+            lblMensaje.setStyle("-fx-text-fill: green;");
+        }
+    }
+
+    private void limpiarCampos() {
+        tfUsuario.clear();
+        pfContrasena.clear();
+        tfUsuario.requestFocus();
     }
 
     @FXML
-    private void limpiarCampos(ActionEvent event) {
-        txtUsuario.clear();
-        txtContraseña.clear();
-        lblMensaje.setText("");
+    private void salir(ActionEvent event) {
+        Stage stage = (Stage) btnIniciarSesion.getScene().getWindow();
+        stage.close();
     }
 }

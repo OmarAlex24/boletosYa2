@@ -2,54 +2,45 @@ package boletosyappae.models.pojo;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.ArrayList;
 
 public class AsistenteVuelo extends Empleado {
-    private int numHorasAsistidas;
     private List<Idioma> idiomas;
+    private String certificacionSeguridad;
 
+    // Constructors
     public AsistenteVuelo() {
         super();
-        this.idiomas = new ArrayList<>();
     }
 
-    public AsistenteVuelo(String numEmpleado, String nombre, String direccion, LocalDate fechaNac,
-                          String genero, float sueldo, String nombreUsuario, String contraseña,
-                          String correo, int numHorasAsistidas, List<Idioma> idiomas) {
-        super(numEmpleado, nombre, direccion, fechaNac, genero, sueldo, nombreUsuario, contraseña, correo);
-        this.numHorasAsistidas = numHorasAsistidas;
-        this.idiomas = idiomas != null ? idiomas : new ArrayList<>();
+    public AsistenteVuelo(int idEmpleado, String nombre, String apellidoPaterno,
+                          String apellidoMaterno, String telefono, String email,
+                          LocalDate fechaContratacion, double salario,
+                          int idAerolinea, List<Idioma> idiomas, String certificacionSeguridad) {
+        super(idEmpleado, nombre, apellidoPaterno, apellidoMaterno, telefono,
+                email, fechaContratacion, salario, TipoEmpleado.ASISTENTE_VUELO, idAerolinea);
+        this.idiomas = idiomas;
+        this.certificacionSeguridad = certificacionSeguridad;
     }
 
-    @Override
-    public String getTipoEmpleado() {
-        return "ASISTENTE_VUELO";
-    }
-
-    // Getters y Setters
-    public int getNumHorasAsistidas() { return numHorasAsistidas; }
-    public void setNumHorasAsistidas(int numHorasAsistidas) { this.numHorasAsistidas = numHorasAsistidas; }
-
+    // Getters and Setters
     public List<Idioma> getIdiomas() { return idiomas; }
     public void setIdiomas(List<Idioma> idiomas) { this.idiomas = idiomas; }
 
-    public void agregarIdioma(Idioma idioma) {
-        if (!this.idiomas.contains(idioma)) {
-            this.idiomas.add(idioma);
-        }
-    }
+    public String getCertificacionSeguridad() { return certificacionSeguridad; }
+    public void setCertificacionSeguridad(String certificacionSeguridad) { this.certificacionSeguridad = certificacionSeguridad; }
 
-    public void removerIdioma(Idioma idioma) {
-        this.idiomas.remove(idioma);
-    }
-
-    public int getNumeroIdiomas() {
-        return idiomas.size();
+    public boolean hablaIdioma(String idioma) {
+        return idiomas != null && idiomas.stream()
+                .anyMatch(i -> i.getNombre().equalsIgnoreCase(idioma));
     }
 
     @Override
     public String toString() {
-        return String.format("AsistenteVuelo{numEmpleado='%s', nombre='%s', horas=%d, idiomas=%d}",
-                numEmpleado, nombre, numHorasAsistidas, idiomas.size());
+        return "AsistenteVuelo{" +
+                "idEmpleado=" + idEmpleado +
+                ", nombre='" + nombre + '\'' +
+                ", idiomas=" + (idiomas != null ? idiomas.size() : 0) +
+                ", certificacionSeguridad='" + certificacionSeguridad + '\'' +
+                '}';
     }
 }

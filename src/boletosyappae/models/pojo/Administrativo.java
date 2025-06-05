@@ -1,45 +1,52 @@
 package boletosyappae.models.pojo;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class Administrativo extends Empleado {
     private TipoDepartamento departamento;
-    private LocalTime horaEntrada;
-    private LocalTime horaSalida;
+    private String usuario;
+    private String contrasena;
 
+    // Constructors
     public Administrativo() {
         super();
     }
 
-    public Administrativo(String numEmpleado, String nombre, String direccion, LocalDate fechaNac,
-                          String genero, float sueldo, String nombreUsuario, String contraseña,
-                          String correo, TipoDepartamento departamento, LocalTime horaEntrada,
-                          LocalTime horaSalida) {
-        super(numEmpleado, nombre, direccion, fechaNac, genero, sueldo, nombreUsuario, contraseña, correo);
+    public Administrativo(int idEmpleado, String nombre, String apellidoPaterno,
+                          String apellidoMaterno, String telefono, String email,
+                          LocalDate fechaContratacion, double salario,
+                          int idAerolinea, TipoDepartamento departamento,
+                          String usuario, String contrasena) {
+        super(idEmpleado, nombre, apellidoPaterno, apellidoMaterno, telefono,
+                email, fechaContratacion, salario, TipoEmpleado.ADMINISTRATIVO, idAerolinea);
         this.departamento = departamento;
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
+        this.usuario = usuario;
+        this.contrasena = contrasena;
     }
 
-    @Override
-    public String getTipoEmpleado() {
-        return "ADMINISTRATIVO";
-    }
-
-    // Getters y Setters
+    // Getters and Setters
     public TipoDepartamento getDepartamento() { return departamento; }
     public void setDepartamento(TipoDepartamento departamento) { this.departamento = departamento; }
 
-    public LocalTime getHoraEntrada() { return horaEntrada; }
-    public void setHoraEntrada(LocalTime horaEntrada) { this.horaEntrada = horaEntrada; }
+    public String getUsuario() { return usuario; }
+    public void setUsuario(String usuario) { this.usuario = usuario; }
 
-    public LocalTime getHoraSalida() { return horaSalida; }
-    public void setHoraSalida(LocalTime horaSalida) { this.horaSalida = horaSalida; }
+    public String getContrasena() { return contrasena; }
+    public void setContrasena(String contrasena) { this.contrasena = contrasena; }
+
+    // Authentication method
+    public boolean validarCredenciales(String usuario, String contrasena) {
+        return this.usuario != null && this.contrasena != null &&
+                this.usuario.equals(usuario) && this.contrasena.equals(contrasena);
+    }
 
     @Override
     public String toString() {
-        return String.format("Administrativo{numEmpleado='%s', nombre='%s', departamento=%s}",
-                numEmpleado, nombre, departamento);
+        return "Administrativo{" +
+                "idEmpleado=" + idEmpleado +
+                ", nombre='" + nombre + '\'' +
+                ", departamento=" + departamento +
+                ", usuario='" + usuario + '\'' +
+                '}';
     }
 }

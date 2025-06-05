@@ -1,71 +1,95 @@
 package boletosyappae.models.dao;
 
-import boletosyappae.exceptions.DatosInvalidosException;
-import boletosyappae.utils.adapters.LocalDateAdapter;
-import boletosyappae.utils.adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
+import boletosyappae.utils.adapters.LocalDateAdapter;
+import boletosyappae.utils.adapters.LocalDateTimeAdapter;
+import boletosyappae.utils.adapters.LocalTimeAdapter;
+import boletosyappae.utils.adapters.EmpleadoTypeAdapter;
+import boletosyappae.models.pojo.Empleado;
+
 import java.io.*;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GsonDAO<T> {
-    protected String archivo;
+    protected static final String RUTA_ARCHIVOS = "data/";
     protected Gson gson;
-    protected Type tipoLista;
 
-    public GsonDAO(String archivo, Type tipoLista) {
-        this.archivo = archivo;
-        this.tipoLista = tipoLista;
+    public GsonDAO() {
+        // Crear directorio si no existe
+        File directorio = new File(RUTA_ARCHIVOS);
+        if (!directorio.exists()) {
+            directorio.mkdirs();
+        }
+
+        // Configurar Gson con adaptadores personalizados
         this.gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+                .registerTypeAdapter(LocalTime.class, new LocalTimeAdapter())
+                .registerTypeAdapter(Empleado.class, new EmpleadoTypeAdapter())
                 .setPrettyPrinting()
                 .create();
-        crearArchivoSiNoExiste();
     }
 
-    private void crearArchivoSiNoExiste() {
-        File file = new File(archivo);
-        if (!file.exists()) {
-            try {
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-                // Escribir array vacío
-                try (FileWriter writer = new FileWriter(file)) {
-                    writer.write("[]");
-                }
-            } catch (IOException e) {
-                System.err.println("Error creando archivo: " + e.getMessage());
-            }
+    /**
+     * Lee un archivo JSON y lo convierte a objeto/lista
+     */
+    protected List<T> leerArchivo(String nombreArchivo, Type tipo) {
+        String rutaCompleta = RUTA_ARCHIVOS + nombreArchivo;
+        File archivo = new File(rutaCompleta);
+
+        if (!archivo.exists()) {
+            return null;
         }
-    }
 
-    protected List<T> cargarDatos() throws DatosInvalidosException {
         try (FileReader reader = new FileReader(archivo)) {
-            List<T> datos = gson.fromJson(reader, tipoLista);
-            return datos != null ? datos : new ArrayList<>();
+            return gson.fromJson(reader, tipo);
         } catch (IOException e) {
-            throw new DatosInvalidosException("Error al cargar datos del archivo: " + archivo);
+            System.err.println("Error al leer archivo " + nombreArchivo + ": " + e.getMessage());
+            return null;
         }
     }
 
-    protected void guardarDatos(List<T> datos) throws DatosInvalidosException {
-        try (FileWriter writer = new FileWriter(archivo)) {
+    /**
+     * Escribe un objeto/lista a archivo JSON
+     */
+    protected <T> boolean escribirArchivo(String nombreArchivo, T datos) {
+        String rutaCompleta = RUTA_ARCHIVOS + nombreArchivo;
+
+        try (FileWriter writer = new FileWriter(rutaCompleta)) {
             gson.toJson(datos, writer);
+            return true;
         } catch (IOException e) {
-            throw new DatosInvalidosException("Error al guardar datos en el archivo: " + archivo);
+            System.err.println("Error al escribir archivo " + nombreArchivo + ": " + e.getMessage());
+            return false;
         }
     }
 
-    public abstract List<T> obtenerTodos() throws DatosInvalidosException;
-    public abstract T obtenerPorId(int id) throws DatosInvalidosException;
-    public abstract void guardar(T objeto) throws DatosInvalidosException;
-    public abstract void actualizar(T objeto) throws DatosInvalidosException;
-    public abstract void eliminar(int id) throws DatosInvalidosException;
-    public abstract int obtenerSiguienteId() throws DatosInvalidosException;
+    /**
+     * Verifica si un archivo existe
+     */
+    protected boolean archivoExiste(String nombreArchivo) {
+        File archivo = new File(RUTA_ARCHIVOS + nombreArchivo);
+        return archivo.exists();
+    }
+
+    /**
+     * Crea un archivo vacío con una lista vacía
+     */
+    protected boolean crearArchivoVacio(String nombreArchivo) {
+        return escribirArchivo(nombreArchivo, new ArrayList<>());
+    }
+
+    /**
+     * Obtiene la ruta completa del archivo
+     */
+    protected String obtenerRutaCompleta(String nombreArchivo) {
+        return RUTA_ARCHIVOS + nombreArchivo;
+    }
 }

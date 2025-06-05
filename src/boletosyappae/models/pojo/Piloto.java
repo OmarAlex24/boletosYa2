@@ -1,44 +1,46 @@
 package boletosyappae.models.pojo;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class Piloto extends Empleado {
-    private LicenciaPiloto licenciaPiloto;
-    private int aniosExperiencia;
-    private int numTotalHoras;
+    private List<LicenciaPiloto> licencias;
+    private int horasVuelo;
 
+    // Constructors
     public Piloto() {
         super();
     }
 
-    public Piloto(String numEmpleado, String nombre, String direccion, LocalDate fechaNac,
-                  String genero, float sueldo, String nombreUsuario, String contraseña,
-                  String correo, LicenciaPiloto licenciaPiloto, int aniosExperiencia,
-                  int numTotalHoras) {
-        super(numEmpleado, nombre, direccion, fechaNac, genero, sueldo, nombreUsuario, contraseña, correo);
-        this.licenciaPiloto = licenciaPiloto;
-        this.aniosExperiencia = aniosExperiencia;
-        this.numTotalHoras = numTotalHoras;
+    public Piloto(int idEmpleado, String nombre, String apellidoPaterno,
+                  String apellidoMaterno, String telefono, String email,
+                  LocalDate fechaContratacion, double salario,
+                  int idAerolinea, List<LicenciaPiloto> licencias, int horasVuelo) {
+        super(idEmpleado, nombre, apellidoPaterno, apellidoMaterno, telefono,
+                email, fechaContratacion, salario, TipoEmpleado.PILOTO, idAerolinea);
+        this.licencias = licencias;
+        this.horasVuelo = horasVuelo;
     }
 
-    @Override
-    public String getTipoEmpleado() {
-        return "PILOTO";
+    // Getters and Setters
+    public List<LicenciaPiloto> getLicencias() { return licencias; }
+    public void setLicencias(List<LicenciaPiloto> licencias) { this.licencias = licencias; }
+
+    public int getHorasVuelo() { return horasVuelo; }
+    public void setHorasVuelo(int horasVuelo) { this.horasVuelo = horasVuelo; }
+
+    public boolean tieneLicenciaParaAvion(String tipoAvion) {
+        return licencias != null && licencias.stream()
+                .anyMatch(licencia -> licencia.getTipoAeronave().equalsIgnoreCase(tipoAvion));
     }
-
-    // Getters y Setters
-    public LicenciaPiloto getLicenciaPiloto() { return licenciaPiloto; }
-    public void setLicenciaPiloto(LicenciaPiloto licenciaPiloto) { this.licenciaPiloto = licenciaPiloto; }
-
-    public int getAniosExperiencia() { return aniosExperiencia; }
-    public void setAniosExperiencia(int aniosExperiencia) { this.aniosExperiencia = aniosExperiencia; }
-
-    public int getNumTotalHoras() { return numTotalHoras; }
-    public void setNumTotalHoras(int numTotalHoras) { this.numTotalHoras = numTotalHoras; }
 
     @Override
     public String toString() {
-        return String.format("Piloto{numEmpleado='%s', nombre='%s', licencia=%s, experiencia=%d años}",
-                numEmpleado, nombre, licenciaPiloto, aniosExperiencia);
+        return "Piloto{" +
+                "idEmpleado=" + idEmpleado +
+                ", nombre='" + nombre + '\'' +
+                ", horasVuelo=" + horasVuelo +
+                ", licencias=" + (licencias != null ? licencias.size() : 0) +
+                '}';
     }
 }
