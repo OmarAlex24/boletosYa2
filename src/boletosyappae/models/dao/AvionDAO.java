@@ -29,7 +29,9 @@ public class AvionDAO extends GsonDAO<Avion> {
     @Override
     public void guardar(Avion avion) throws DatosInvalidosException {
         List<Avion> aviones = obtenerTodos();
-        avion.setId(obtenerSiguienteId());
+        if (avion.getId() == 0) {
+            avion.setId(obtenerSiguienteId());
+        }
         aviones.add(avion);
         guardarDatos(aviones);
     }
@@ -37,11 +39,16 @@ public class AvionDAO extends GsonDAO<Avion> {
     @Override
     public void actualizar(Avion avion) throws DatosInvalidosException {
         List<Avion> aviones = obtenerTodos();
+        boolean encontrado = false;
         for (int i = 0; i < aviones.size(); i++) {
             if (aviones.get(i).getId() == avion.getId()) {
                 aviones.set(i, avion);
+                encontrado = true;
                 break;
             }
+        }
+        if (!encontrado) {
+            throw new DatosInvalidosException("Avión con ID " + avion.getId() + " no encontrado");
         }
         guardarDatos(aviones);
     }
@@ -49,7 +56,10 @@ public class AvionDAO extends GsonDAO<Avion> {
     @Override
     public void eliminar(int id) throws DatosInvalidosException {
         List<Avion> aviones = obtenerTodos();
-        aviones.removeIf(a -> a.getId() == id);
+        boolean eliminado = aviones.removeIf(a -> a.getId() == id);
+        if (!eliminado) {
+            throw new DatosInvalidosException("Avión con ID " + id + " no encontrado");
+        }
         guardarDatos(aviones);
     }
 
@@ -62,8 +72,16 @@ public class AvionDAO extends GsonDAO<Avion> {
                 .orElse(0) + 1;
     }
 
+    //FIX buscar primero la aerolina y despues devolver la flotilla
     public List<Avion> obtenerPorAerolinea(int aerolineaId) throws DatosInvalidosException {
         return obtenerTodos().stream()
-                .filter(a -> a.getId() == aerolineaId).collect(Collectors.toList());
+                .filter(a -> a.getId() == aerolineaId)
+                .collect(Collectors.toList());
+    }
+
+    public List<Avion> obtenerPorModelo(String modelo) throws DatosInvalidosException {
+        return obtenerTodos().stream()
+                .filter(a -> a.getModelo().toLowerCase().contains(modelo.toLowerCase()))
+                .collect(Collectors.toList());
     }
 }
