@@ -1,8 +1,8 @@
 package boletosyappae.models.dao;
 
 import boletosyappae.exceptions.DatosInvalidosException;
-import boletosyappae.utils.LocalDateAdapter;
-import boletosyappae.utils.LocalDateTimeAdapter;
+import boletosyappae.utils.adapters.LocalDateAdapter;
+import boletosyappae.utils.adapters.LocalDateTimeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

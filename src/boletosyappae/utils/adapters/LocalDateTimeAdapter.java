@@ -1,4 +1,4 @@
-package boletosyappae.utils;
+package boletosyappae.utils.adapters;
 
 import com.google.gson.*;
 import java.lang.reflect.Type;

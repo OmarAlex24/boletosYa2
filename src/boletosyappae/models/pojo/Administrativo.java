@@ -1,23 +1,45 @@
 package boletosyappae.models.pojo;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Administrativo extends Empleado {
-    private String departamento;
-    private String horario; // 8 horas
+    private TipoDepartamento departamento;
+    private LocalTime horaEntrada;
+    private LocalTime horaSalida;
 
-    public Administrativo(int id, String nombre, String direccion,
-                          LocalDate fechaNacimiento, String genero, double salario,
-                          String usuario, String contrasena, String departamento, String horario) {
-        super(id, nombre, direccion, fechaNacimiento, genero, salario, usuario, contrasena);
-        this.departamento = departamento;
-        this.horario = horario;
-        this.tipoEmpleado = "Administrativo";
+    public Administrativo() {
+        super();
     }
 
-    public String getDepartamento() { return departamento; }
-    public void setDepartamento(String departamento) { this.departamento = departamento; }
+    public Administrativo(String numEmpleado, String nombre, String direccion, LocalDate fechaNac,
+                          String genero, float sueldo, String nombreUsuario, String contraseña,
+                          String correo, TipoDepartamento departamento, LocalTime horaEntrada,
+                          LocalTime horaSalida) {
+        super(numEmpleado, nombre, direccion, fechaNac, genero, sueldo, nombreUsuario, contraseña, correo);
+        this.departamento = departamento;
+        this.horaEntrada = horaEntrada;
+        this.horaSalida = horaSalida;
+    }
 
-    public String getHorario() { return horario; }
-    public void setHorario(String horario) { this.horario = horario; }
+    @Override
+    public String getTipoEmpleado() {
+        return "ADMINISTRATIVO";
+    }
+
+    // Getters y Setters
+    public TipoDepartamento getDepartamento() { return departamento; }
+    public void setDepartamento(TipoDepartamento departamento) { this.departamento = departamento; }
+
+    public LocalTime getHoraEntrada() { return horaEntrada; }
+    public void setHoraEntrada(LocalTime horaEntrada) { this.horaEntrada = horaEntrada; }
+
+    public LocalTime getHoraSalida() { return horaSalida; }
+    public void setHoraSalida(LocalTime horaSalida) { this.horaSalida = horaSalida; }
+
+    @Override
+    public String toString() {
+        return String.format("Administrativo{numEmpleado='%s', nombre='%s', departamento=%s}",
+                numEmpleado, nombre, departamento);
+    }
 }

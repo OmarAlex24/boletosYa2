@@ -85,4 +85,16 @@ public class EmpleadoDAO extends GsonDAO<Empleado> {
         return obtenerTodos().stream()
                 .filter(e -> e.getTipoEmpleado().equals("AsistenteVuelo")).collect(Collectors.toList());
     }
+
+    public Empleado buscarPorUsuario(String usuario) throws DatosInvalidosException {
+        List<Empleado> empleados = obtenerTodos();
+
+        for (Empleado empleado : empleados) {
+            if(empleado.getNombreUsuario().equals(usuario)) {
+                return empleado;
+            }
+        }
+
+        return null;
+    }
 }

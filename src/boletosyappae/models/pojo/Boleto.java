@@ -1,50 +1,55 @@
 package boletosyappae.models.pojo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Boleto {
-    private int id;
-    private int clienteId;
-    private int vueloId;
-    private double precio;
-    private LocalDateTime fechaCompra;
-    private String asiento;
+    private String idBoleto;
+    private LocalDate fechaCompra;
+    private LocalTime horaCompra;
+    private String metodoPago;
+    private String idVuelo;
+    private String numCliente;
     private EstadoBoleto estado;
 
-    public Boleto() {
-        this.fechaCompra = LocalDateTime.now();
-        this.estado = EstadoBoleto.ACTIVO;
-    }
+    public Boleto() {}
 
-    public Boleto(int id, int clienteId, int vueloId, double precio, String asiento) {
-        this.id = id;
-        this.clienteId = clienteId;
-        this.vueloId = vueloId;
-        this.precio = precio;
-        this.asiento = asiento;
-        this.fechaCompra = LocalDateTime.now();
-        this.estado = EstadoBoleto.ACTIVO;
+    public Boleto(String idBoleto, LocalDate fechaCompra, LocalTime horaCompra,
+                  String metodoPago, String idVuelo, String numCliente, EstadoBoleto estado) {
+        this.idBoleto = idBoleto;
+        this.fechaCompra = fechaCompra;
+        this.horaCompra = horaCompra;
+        this.metodoPago = metodoPago;
+        this.idVuelo = idVuelo;
+        this.numCliente = numCliente;
+        this.estado = estado;
     }
 
     // Getters y Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public String getIdBoleto() { return idBoleto; }
+    public void setIdBoleto(String idBoleto) { this.idBoleto = idBoleto; }
 
-    public int getClienteId() { return clienteId; }
-    public void setClienteId(int clienteId) { this.clienteId = clienteId; }
+    public LocalDate getFechaCompra() { return fechaCompra; }
+    public void setFechaCompra(LocalDate fechaCompra) { this.fechaCompra = fechaCompra; }
 
-    public int getVueloId() { return vueloId; }
-    public void setVueloId(int vueloId) { this.vueloId = vueloId; }
+    public LocalTime getHoraCompra() { return horaCompra; }
+    public void setHoraCompra(LocalTime horaCompra) { this.horaCompra = horaCompra; }
 
-    public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public String getMetodoPago() { return metodoPago; }
+    public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
 
-    public LocalDateTime getFechaCompra() { return fechaCompra; }
-    public void setFechaCompra(LocalDateTime fechaCompra) { this.fechaCompra = fechaCompra; }
+    public String getIdVuelo() { return idVuelo; }
+    public void setIdVuelo(String idVuelo) { this.idVuelo = idVuelo; }
 
-    public String getAsiento() { return asiento; }
-    public void setAsiento(String asiento) { this.asiento = asiento; }
+    public String getNumCliente() { return numCliente; }
+    public void setNumCliente(String numCliente) { this.numCliente = numCliente; }
 
     public EstadoBoleto getEstado() { return estado; }
     public void setEstado(EstadoBoleto estado) { this.estado = estado; }
+
+    @Override
+    public String toString() {
+        return String.format("Boleto{id='%s', cliente='%s', vuelo='%s', estado=%s}",
+                idBoleto, numCliente, idVuelo, estado);
+    }
 }

@@ -3,27 +3,42 @@ package boletosyappae.models.pojo;
 import java.time.LocalDate;
 
 public class Piloto extends Empleado {
-    private String tipoLicencia;
-    private int anosExperiencia;
-    private int horasVueloTotal;
+    private LicenciaPiloto licenciaPiloto;
+    private int aniosExperiencia;
+    private int numTotalHoras;
 
-    public Piloto(int id, String nombre, String direccion,
-                  LocalDate fechaNacimiento, String genero, double salario,
-                  String usuario, String contrasena, String tipoLicencia,
-                  int anosExperiencia, int horasVueloTotal) {
-        super(id, nombre, direccion, fechaNacimiento, genero, salario, usuario, contrasena);
-        this.tipoLicencia = tipoLicencia;
-        this.anosExperiencia = anosExperiencia;
-        this.horasVueloTotal = horasVueloTotal;
-        this.tipoEmpleado = "Piloto";
+    public Piloto() {
+        super();
     }
 
-    public String getTipoLicencia() { return tipoLicencia; }
-    public void setTipoLicencia(String tipoLicencia) { this.tipoLicencia = tipoLicencia; }
+    public Piloto(String numEmpleado, String nombre, String direccion, LocalDate fechaNac,
+                  String genero, float sueldo, String nombreUsuario, String contraseña,
+                  String correo, LicenciaPiloto licenciaPiloto, int aniosExperiencia,
+                  int numTotalHoras) {
+        super(numEmpleado, nombre, direccion, fechaNac, genero, sueldo, nombreUsuario, contraseña, correo);
+        this.licenciaPiloto = licenciaPiloto;
+        this.aniosExperiencia = aniosExperiencia;
+        this.numTotalHoras = numTotalHoras;
+    }
 
-    public int getAnosExperiencia() { return anosExperiencia; }
-    public void setAnosExperiencia(int anosExperiencia) { this.anosExperiencia = anosExperiencia; }
+    @Override
+    public String getTipoEmpleado() {
+        return "PILOTO";
+    }
 
-    public int getHorasVueloTotal() { return horasVueloTotal; }
-    public void setHorasVueloTotal(int horasVueloTotal) { this.horasVueloTotal = horasVueloTotal; }
+    // Getters y Setters
+    public LicenciaPiloto getLicenciaPiloto() { return licenciaPiloto; }
+    public void setLicenciaPiloto(LicenciaPiloto licenciaPiloto) { this.licenciaPiloto = licenciaPiloto; }
+
+    public int getAniosExperiencia() { return aniosExperiencia; }
+    public void setAniosExperiencia(int aniosExperiencia) { this.aniosExperiencia = aniosExperiencia; }
+
+    public int getNumTotalHoras() { return numTotalHoras; }
+    public void setNumTotalHoras(int numTotalHoras) { this.numTotalHoras = numTotalHoras; }
+
+    @Override
+    public String toString() {
+        return String.format("Piloto{numEmpleado='%s', nombre='%s', licencia=%s, experiencia=%d años}",
+                numEmpleado, nombre, licenciaPiloto, aniosExperiencia);
+    }
 }
