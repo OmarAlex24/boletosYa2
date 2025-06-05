@@ -6,10 +6,10 @@ public class AsistenteVuelo extends Empleado {
     private int horasAsistencia;
     private int numeroIdiomas;
 
-    public AsistenteVuelo(String identificador, String nombre, String direccion,
+    public AsistenteVuelo(int id, String nombre, String direccion,
                           LocalDate fechaNacimiento, String genero, double salario,
                           String usuario, String contrasena, int horasAsistencia, int numeroIdiomas) {
-        super(identificador, nombre, direccion, fechaNacimiento, genero, salario, usuario, contrasena);
+        super(id, nombre, direccion, fechaNacimiento, genero, salario, usuario, contrasena);
         this.horasAsistencia = horasAsistencia;
         this.numeroIdiomas = numeroIdiomas;
         this.tipoEmpleado = "AsistenteVuelo";

@@ -7,11 +7,11 @@ public class Piloto extends Empleado {
     private int anosExperiencia;
     private int horasVueloTotal;
 
-    public Piloto(String identificador, String nombre, String direccion,
+    public Piloto(int id, String nombre, String direccion,
                   LocalDate fechaNacimiento, String genero, double salario,
                   String usuario, String contrasena, String tipoLicencia,
                   int anosExperiencia, int horasVueloTotal) {
-        super(identificador, nombre, direccion, fechaNacimiento, genero, salario, usuario, contrasena);
+        super(id, nombre, direccion, fechaNacimiento, genero, salario, usuario, contrasena);
         this.tipoLicencia = tipoLicencia;
         this.anosExperiencia = anosExperiencia;
         this.horasVueloTotal = horasVueloTotal;
