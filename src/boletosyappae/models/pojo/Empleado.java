@@ -2,80 +2,131 @@ package boletosyappae.models.pojo;
 
 import java.time.LocalDate;
 
+/**
+ * Clase abstracta base para todos los empleados.
+ */
 public abstract class Empleado {
-    protected int idEmpleado;
+    protected String numEmpleado;
     protected String nombre;
-    protected String apellidoPaterno;
-    protected String apellidoMaterno;
-    protected String telefono;
-    protected String email;
-    protected LocalDate fechaContratacion;
-    protected double salario;
-    protected TipoEmpleado tipoEmpleado;
-    protected int idAerolinea;
+    protected String direccion;
+    protected LocalDate fechaNac;
+    protected String genero;
+    protected double sueldo;
+    protected String nombreUsuario;
+    protected String contraseña;
+    protected String correo;
+    protected TipoEmpleado tipo;
 
-    // Constructor
-    public Empleado() {}
-
-    public Empleado(int idEmpleado, String nombre, String apellidoPaterno,
-                    String apellidoMaterno, String telefono, String email,
-                    LocalDate fechaContratacion, double salario,
-                    TipoEmpleado tipoEmpleado, int idAerolinea) {
-        this.idEmpleado = idEmpleado;
-        this.nombre = nombre;
-        this.apellidoPaterno = apellidoPaterno;
-        this.apellidoMaterno = apellidoMaterno;
-        this.telefono = telefono;
-        this.email = email;
-        this.fechaContratacion = fechaContratacion;
-        this.salario = salario;
-        this.tipoEmpleado = tipoEmpleado;
-        this.idAerolinea = idAerolinea;
+    public Empleado() {
     }
 
-    // Getters and Setters
-    public int getIdEmpleado() { return idEmpleado; }
-    public void setIdEmpleado(int idEmpleado) { this.idEmpleado = idEmpleado; }
+    public Empleado(String numEmpleado, String nombre, String direccion, LocalDate fechaNac, String genero,
+                    double sueldo, String nombreUsuario, String contraseña, String correo, TipoEmpleado tipo) {
+        this.numEmpleado = numEmpleado;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.fechaNac = fechaNac;
+        this.genero = genero;
+        this.sueldo = sueldo;
+        this.nombreUsuario = nombreUsuario;
+        this.contraseña = contraseña; // Se asigna directamente la contraseña (hasheada o no)
+        this.correo = correo;
+        this.tipo = tipo;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    // --- Getters y Setters ---
 
-    public String getApellidoPaterno() { return apellidoPaterno; }
-    public void setApellidoPaterno(String apellidoPaterno) { this.apellidoPaterno = apellidoPaterno; }
+    public String getNumEmpleado() {
+        return numEmpleado;
+    }
 
-    public String getApellidoMaterno() { return apellidoMaterno; }
-    public void setApellidoMaterno(String apellidoMaterno) { this.apellidoMaterno = apellidoMaterno; }
+    public void setNumEmpleado(String numEmpleado) {
+        this.numEmpleado = numEmpleado;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public LocalDate getFechaContratacion() { return fechaContratacion; }
-    public void setFechaContratacion(LocalDate fechaContratacion) { this.fechaContratacion = fechaContratacion; }
+    public String getDireccion() {
+        return direccion;
+    }
 
-    public double getSalario() { return salario; }
-    public void setSalario(double salario) { this.salario = salario; }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
-    public TipoEmpleado getTipoEmpleado() { return tipoEmpleado; }
-    public void setTipoEmpleado(TipoEmpleado tipoEmpleado) { this.tipoEmpleado = tipoEmpleado; }
+    public LocalDate getFechaNac() {
+        return fechaNac;
+    }
 
-    public int getIdAerolinea() { return idAerolinea; }
-    public void setIdAerolinea(int idAerolinea) { this.idAerolinea = idAerolinea; }
+    public void setFechaNac(LocalDate fechaNac) {
+        this.fechaNac = fechaNac;
+    }
 
-    public String getNombreCompleto() {
-        return nombre + " " + apellidoPaterno + " " + apellidoMaterno;
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public double getSueldo() {
+        return sueldo;
+    }
+
+    public void setSueldo(double sueldo) {
+        this.sueldo = sueldo;
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    /**
+     * Asigna la contraseña. Este método NO la encripta.
+     * La lógica de encriptación debe realizarse ANTES de llamar a este método.
+     * @param contrasena La contraseña (generalmente ya hasheada) a asignar.
+     */
+    public void setContraseña(String contrasena) {
+        this.contraseña = contrasena;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public TipoEmpleado getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoEmpleado tipo) {
+        this.tipo = tipo;
     }
 
     @Override
     public String toString() {
         return "Empleado{" +
-                "idEmpleado=" + idEmpleado +
+                "numEmpleado='" + numEmpleado + '\'' +
                 ", nombre='" + nombre + '\'' +
-                ", apellidoPaterno='" + apellidoPaterno + '\'' +
-                ", apellidoMaterno='" + apellidoMaterno + '\'' +
-                ", tipoEmpleado=" + tipoEmpleado +
+                ", tipo=" + tipo +
                 '}';
     }
 }

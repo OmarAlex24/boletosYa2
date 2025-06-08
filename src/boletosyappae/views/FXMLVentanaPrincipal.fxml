@@ -2,13 +2,15 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uniAir.controllers.FXMLVentanaPrincipalController">
+<AnchorPane id="AnchorPane" prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boletosyappae.controllers.FXMLVentanaPrincipalController">
     <children>
-        <BorderPane layoutX="0.0" layoutY="0.0" prefHeight="700.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <BorderPane fx:id="borderPanePrincipal" prefHeight="700.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <left>
                 <VBox prefWidth="250.0" style="-fx-background-color: #2980b9;" BorderPane.alignment="CENTER">
                     <children>
@@ -26,6 +28,26 @@
                                 </Label>
                             </children>
                         </VBox>
+                        
+                        <!-- SECCIÓN DE USUARIO AÑADIDA -->
+                        <VBox alignment="CENTER_LEFT" spacing="2.0" style="-fx-background-color: #3498db;">
+                            <padding>
+                                <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                            </padding>
+                            <children>
+                                <Label fx:id="lblNombreUsuario" text="Usuario: " textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="lblTipoEmpleado" text="Rol: " textFill="#ecf0f1">
+                                    <font>
+                                        <Font size="12.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        
                         <VBox spacing="5.0">
                             <padding>
                                 <Insets bottom="20.0" left="10.0" right="10.0" top="30.0" />
@@ -204,3 +226,4 @@
         </BorderPane>
     </children>
 </AnchorPane>
+

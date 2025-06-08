@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXML.java to edit this template
- */
 package boletosyappae;
 
 import javafx.application.Application;
@@ -11,8 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- *
- * @author OmarAlex
+ * Clase principal que inicia la aplicación JavaFX.
  */
 public class BoletosYaPPAE extends Application {
     
@@ -22,15 +17,17 @@ public class BoletosYaPPAE extends Application {
         
         Scene scene = new Scene(root);
         
+        stage.setTitle("UniAir - Iniciar Sesión");
         stage.setScene(scene);
         stage.show();
     }
 
     /**
-     * @param args the command line arguments
+     * @param args los argumentos de la línea de comandos
      */
     public static void main(String[] args) {
         launch(args);
     }
+    
     
 }

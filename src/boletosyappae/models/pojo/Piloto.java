@@ -1,46 +1,70 @@
 package boletosyappae.models.pojo;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.List; // Aunque el PDF sugiere un tipo, el JSON y adapter usan uno. Se usa uno.
 
+/**
+ * Clase para empleados Pilotos.
+ * Ajustada para coincidir con los requerimientos del PDF y la estructura del JSON.
+ *
+ * Requerimientos del PDF para Piloto (además de los de Empleado):
+ * - Tipo de licencia que tienen para volar los aviones (mapeado a licenciaPiloto)
+ * - Años de experiencia de vuelo (mapeado a aniosExperiencia)
+ * - Número total de horas de vuelo (mapeado a numTotalHoras)
+ */
 public class Piloto extends Empleado {
-    private List<LicenciaPiloto> licencias;
-    private int horasVuelo;
+    private LicenciaPiloto licenciaPiloto; // Tipo de licencia (según PDF y JSON)
+    private int aniosExperiencia; // Años de experiencia (según PDF y JSON)
+    private int numTotalHoras; // Número total de horas de vuelo (según PDF y JSON)
 
-    // Constructors
+    // Constructores
     public Piloto() {
         super();
+        this.tipo = TipoEmpleado.PILOTO;
     }
 
-    public Piloto(int idEmpleado, String nombre, String apellidoPaterno,
-                  String apellidoMaterno, String telefono, String email,
-                  LocalDate fechaContratacion, double salario,
-                  int idAerolinea, List<LicenciaPiloto> licencias, int horasVuelo) {
-        super(idEmpleado, nombre, apellidoPaterno, apellidoMaterno, telefono,
-                email, fechaContratacion, salario, TipoEmpleado.PILOTO, idAerolinea);
-        this.licencias = licencias;
-        this.horasVuelo = horasVuelo;
+    public Piloto(String numEmpleado, String nombre, String direccion, LocalDate fechaNac, String genero,
+                  double sueldo, String nombreUsuario, String contraseña, String correo,
+                  LicenciaPiloto licenciaPiloto, int aniosExperiencia, int numTotalHoras) {
+        super(numEmpleado, nombre, direccion, fechaNac, genero, sueldo, nombreUsuario, contraseña, correo, TipoEmpleado.PILOTO);
+        this.licenciaPiloto = licenciaPiloto;
+        this.aniosExperiencia = aniosExperiencia;
+        this.numTotalHoras = numTotalHoras;
     }
 
-    // Getters and Setters
-    public List<LicenciaPiloto> getLicencias() { return licencias; }
-    public void setLicencias(List<LicenciaPiloto> licencias) { this.licencias = licencias; }
+    // Getters y Setters
+    public LicenciaPiloto getLicenciaPiloto() {
+        return licenciaPiloto;
+    }
 
-    public int getHorasVuelo() { return horasVuelo; }
-    public void setHorasVuelo(int horasVuelo) { this.horasVuelo = horasVuelo; }
+    public void setLicenciaPiloto(LicenciaPiloto licenciaPiloto) {
+        this.licenciaPiloto = licenciaPiloto;
+    }
 
-    public boolean tieneLicenciaParaAvion(String tipoAvion) {
-        return licencias != null && licencias.stream()
-                .anyMatch(licencia -> licencia.getTipoAeronave().equalsIgnoreCase(tipoAvion));
+    public int getAniosExperiencia() {
+        return aniosExperiencia;
+    }
+
+    public void setAniosExperiencia(int aniosExperiencia) {
+        this.aniosExperiencia = aniosExperiencia;
+    }
+
+    public int getNumTotalHoras() {
+        return numTotalHoras;
+    }
+
+    public void setNumTotalHoras(int numTotalHoras) {
+        this.numTotalHoras = numTotalHoras;
     }
 
     @Override
     public String toString() {
         return "Piloto{" +
-                "idEmpleado=" + idEmpleado +
-                ", nombre='" + nombre + '\'' +
-                ", horasVuelo=" + horasVuelo +
-                ", licencias=" + (licencias != null ? licencias.size() : 0) +
+                "numEmpleado='" + getNumEmpleado() + '\'' +
+                ", nombre='" + getNombre() + '\'' +
+                ", licencia=" + licenciaPiloto +
+                ", aniosExperiencia=" + aniosExperiencia +
+                ", numTotalHoras=" + numTotalHoras +
                 '}';
     }
 }

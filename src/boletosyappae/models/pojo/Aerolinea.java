@@ -1,25 +1,41 @@
 package boletosyappae.models.pojo;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.annotations.SerializedName;
 
+/**
+ * Clase para representar una Aerolínea. Modelo de datos corregido para
+ * coincidir con el JSON y simplificado.
+ */
 public class Aerolinea {
-    private int id;
-    private String numeroIdentificacion;
-    private String nombre;
-    private String direccion;
-    private String personaContacto;
-    private String numeroTelefonico;
-    private List<Avion> flotilla;
 
-    public Aerolinea(String numeroIdentificacion, String nombre, String direccion,
-                     String personaContacto, String numeroTelefonico) {
+    @SerializedName("idAerolinea")
+    private int id;
+
+    private String numeroIdentificacion;
+
+    @SerializedName("nombre")
+    private String nombre;
+
+    @SerializedName("direccion")
+    private String direccion;
+
+    @SerializedName("personaContacto")
+    private String personaContacto;
+
+    @SerializedName("telefono")
+    private String numeroTelefonico;
+
+    public Aerolinea() {
+    }
+
+    public Aerolinea(int id, String numeroIdentificacion, String nombre, String direccion,
+            String personaContacto, String numeroTelefonico) {
+        this.id = id;
         this.numeroIdentificacion = numeroIdentificacion;
         this.nombre = nombre;
         this.direccion = direccion;
         this.personaContacto = personaContacto;
         this.numeroTelefonico = numeroTelefonico;
-        this.flotilla = new ArrayList<>();
     }
 
     public int getId() {
@@ -30,24 +46,48 @@ public class Aerolinea {
         this.id = id;
     }
 
-    // Getters y setters
-    public String getNumeroIdentificacion() { return numeroIdentificacion; }
-    public void setNumeroIdentificacion(String numeroIdentificacion) { this.numeroIdentificacion = numeroIdentificacion; }
+    public String getNumeroIdentificacion() {
+        return numeroIdentificacion;
+    }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public void setNumeroIdentificacion(String numeroIdentificacion) {
+        this.numeroIdentificacion = numeroIdentificacion;
+    }
 
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public String getNombre() {
+        return nombre;
+    }
 
-    public String getPersonaContacto() { return personaContacto; }
-    public void setPersonaContacto(String personaContacto) { this.personaContacto = personaContacto; }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
 
-    public String getNumeroTelefonico() { return numeroTelefonico; }
-    public void setNumeroTelefonico(String numeroTelefonico) { this.numeroTelefonico = numeroTelefonico; }
+    public String getDireccion() {
+        return direccion;
+    }
 
-    public List<Avion> getFlotilla() { return flotilla; }
-    public void setFlotilla(List<Avion> flotilla) { this.flotilla = flotilla; }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
-    public void agregarAvion(Avion avion) { this.flotilla.add(avion); }
+    public String getPersonaContacto() {
+        return personaContacto;
+    }
+
+    public void setPersonaContacto(String personaContacto) {
+        this.personaContacto = personaContacto;
+    }
+
+    public String getNumeroTelefonico() {
+        return numeroTelefonico;
+    }
+
+    public void setNumeroTelefonico(String numeroTelefonico) {
+        this.numeroTelefonico = numeroTelefonico;
+    }
+
+    @Override
+    public String toString() {
+        return "Aerolinea{" + "id=" + id + ", nombre='" + nombre + '\'' + '}';
+    }
 }
