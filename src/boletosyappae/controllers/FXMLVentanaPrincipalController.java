@@ -109,7 +109,7 @@ public class FXMLVentanaPrincipalController implements Initializable {
 
     @FXML
     private void handleGestionClientes(ActionEvent event) {
-        cargarVista("/boletosyappae/views/cliente/FXMLCliente.fxml");
+        cargarVista("/boletosyappae/views/cliente/FXMLClientes.fxml");
     }
 
     @FXML

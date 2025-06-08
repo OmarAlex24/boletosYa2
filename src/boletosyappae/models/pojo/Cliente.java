@@ -25,11 +25,8 @@ public class Cliente {
     private String apellidos; // Apellidos del cliente (concatenación de paterno y materno del JSON)
     private String nacionalidad; // Nacionalidad (según PDF y JSON)
     private LocalDate fechaNacimiento; // Fecha de nacimiento (según PDF y JSON (fechaNac))
-    
-    // El PDF dice "Los clientes pueden comprar boletos en uno o varios vuelos".
-    // Esto implica una relación con Boleto. Se puede manejar con una lista de IDs de Boletos.
-    // El POJO original tenía `List<String> boletosComprados;`
-    // Se mantiene esta idea, aunque la carga/gestión de esta lista es responsabilidad del DAO/Servicio.
+    private String telefono;
+    private String email;
     private List<String> idsBoletosComprados;
 
 
@@ -40,7 +37,7 @@ public class Cliente {
     
     // Constructor completo incluyendo id interno del DAO.
     public Cliente(int id, String numCliente, String nombres, String apellidos,
-                   String nacionalidad, LocalDate fechaNacimiento) {
+                   String nacionalidad, LocalDate fechaNacimiento, String telefono, String email) {
         this.id = id;
         this.numCliente = numCliente;
         this.nombres = nombres;
@@ -48,17 +45,21 @@ public class Cliente {
         this.nacionalidad = nacionalidad;
         this.fechaNacimiento = fechaNacimiento;
         this.idsBoletosComprados = new ArrayList<>();
+        this.telefono = telefono;
+        this.email = email;
     }
 
     // Constructor sin id interno, para cuando el DAO lo asigna.
     public Cliente(String numCliente, String nombres, String apellidos,
-                   String nacionalidad, LocalDate fechaNacimiento) {
+                   String nacionalidad, LocalDate fechaNacimiento, String telefono, String email) {
         this.numCliente = numCliente;
         this.nombres = nombres;
         this.apellidos = apellidos;
         this.nacionalidad = nacionalidad;
         this.fechaNacimiento = fechaNacimiento;
         this.idsBoletosComprados = new ArrayList<>();
+        this.telefono = telefono;
+        this.email = email;
     }
 
 
@@ -130,6 +131,22 @@ public class Cliente {
 
     public String getNombreCompleto() {
         return (nombres != null ? nombres : "") + " " + (apellidos != null ? apellidos : "");
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
