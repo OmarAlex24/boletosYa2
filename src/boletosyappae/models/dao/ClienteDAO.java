@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * DAO para la gestión de clientes.
+ */
 public class ClienteDAO extends GsonDAO<Cliente> {
     private static final String NOMBRE_ARCHIVO = "datos/clientes.json";
 
@@ -18,7 +21,7 @@ public class ClienteDAO extends GsonDAO<Cliente> {
     public List<Cliente> obtenerTodos() throws DatosInvalidosException {
         return cargarDatos();
     }
-    
+
     /**
      * Obtiene un cliente por su ID numérico interno del DAO.
      * @param id El ID numérico del cliente.
@@ -44,7 +47,7 @@ public class ClienteDAO extends GsonDAO<Cliente> {
      */
     @Override
     public Cliente obtenerPorId(String numCliente) throws DatosInvalidosException {
-         if (numCliente == null || numCliente.trim().isEmpty()) {
+        if (numCliente == null || numCliente.trim().isEmpty()) {
             throw new DatosInvalidosException("El número de cliente no puede ser nulo o vacío.");
         }
         Optional<Cliente> clienteOpt = obtenerTodos().stream()
@@ -64,18 +67,15 @@ public class ClienteDAO extends GsonDAO<Cliente> {
         }
         List<Cliente> clientes = obtenerTodos();
 
-        // Verificar si ya existe un cliente con ese numCliente String
         boolean numClienteExiste = clientes.stream()
-                                     .anyMatch(c -> c.getNumCliente().equalsIgnoreCase(cliente.getNumCliente()));
+                .anyMatch(c -> c.getNumCliente().equalsIgnoreCase(cliente.getNumCliente()));
         if (numClienteExiste) {
-             throw new DatosInvalidosException("Ya existe un cliente con el número " + cliente.getNumCliente() + ".");
+            throw new DatosInvalidosException("Ya existe un cliente con el número " + cliente.getNumCliente() + ".");
         }
 
-        // Asignar nuevo ID numérico si es un nuevo cliente (ID es 0 o no establecido)
         if (cliente.getId() == 0) {
             cliente.setId(obtenerSiguienteIdNumerico());
         } else {
-            // Verificar si ya existe un cliente con ese ID numérico.
             boolean idNumericoExiste = clientes.stream().anyMatch(c -> c.getId() == cliente.getId());
             if (idNumericoExiste) {
                 throw new DatosInvalidosException("Ya existe un cliente con el ID numérico " + cliente.getId() + ". Use actualizar en su lugar o revise la asignación de ID.");
@@ -93,13 +93,11 @@ public class ClienteDAO extends GsonDAO<Cliente> {
         List<Cliente> clientes = obtenerTodos();
         boolean encontrado = false;
         for (int i = 0; i < clientes.size(); i++) {
-            // Actualizar por el ID numérico interno
             if (clientes.get(i).getId() == cliente.getId()) {
-                 // Opcional: verificar que el numCliente String no se duplique con otro cliente existente
                 final String numClienteActualizar = cliente.getNumCliente();
                 final int idActualizar = cliente.getId();
                 boolean otroConMismoNumCliente = clientes.stream()
-                    .anyMatch(c -> c.getNumCliente().equalsIgnoreCase(numClienteActualizar) && c.getId() != idActualizar);
+                        .anyMatch(c -> c.getNumCliente().equalsIgnoreCase(numClienteActualizar) && c.getId() != idActualizar);
                 if (otroConMismoNumCliente) {
                     throw new DatosInvalidosException("Otro cliente ya existe con el número " + numClienteActualizar);
                 }
@@ -126,7 +124,7 @@ public class ClienteDAO extends GsonDAO<Cliente> {
         }
         guardarDatos(clientes);
     }
-    
+
     /**
      * Elimina un cliente por su número de cliente String.
      */
@@ -147,7 +145,7 @@ public class ClienteDAO extends GsonDAO<Cliente> {
     public int obtenerSiguienteIdNumerico() throws DatosInvalidosException {
         try {
             return obtenerTodos().stream()
-                    .mapToInt(Cliente::getId) // Usa el ID numérico interno
+                    .mapToInt(Cliente::getId)
                     .max()
                     .orElse(0) + 1;
         } catch (NoSuchElementException e) {

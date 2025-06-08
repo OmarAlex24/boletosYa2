@@ -5,18 +5,12 @@ import java.time.LocalTime;
 
 /**
  * Clase para empleados Administrativos.
- * Ajustada para coincidir con los requerimientos del PDF y la estructura del JSON.
- *
- * Requerimientos del PDF para Administrativo (además de los de Empleado):
- * - Departamento de trabajo (mapeado a departamento)
- * - Horario de 8 horas (mapeado a horaEntrada y horaSalida)
  */
 public class Administrativo extends Empleado {
-    private TipoDepartamento departamento; // Departamento de trabajo (según PDF y JSON)
-    private LocalTime horaEntrada; // Hora de entrada (para cumplir "horario de 8 horas", según JSON)
-    private LocalTime horaSalida;  // Hora de salida (para cumplir "horario de 8 horas", según JSON)
+    private TipoDepartamento departamento;
+    private LocalTime horaEntrada;
+    private LocalTime horaSalida;
 
-    // Constructores
     public Administrativo() {
         super();
         this.tipo = TipoEmpleado.ADMINISTRATIVO;
@@ -31,7 +25,6 @@ public class Administrativo extends Empleado {
         this.horaSalida = horaSalida;
     }
 
-    // Getters y Setters
     public TipoDepartamento getDepartamento() {
         return departamento;
     }
@@ -55,23 +48,6 @@ public class Administrativo extends Empleado {
     public void setHoraSalida(LocalTime horaSalida) {
         this.horaSalida = horaSalida;
     }
-
-    /**
-     * Valida las credenciales. Este método podría estar en EmpleadoDAO o un servicio de autenticación.
-     * Si se mantiene aquí, debe usar los campos de la clase base.
-     * @param usuario El nombre de usuario a validar.
-     * @param contrasena La contraseña a validar (debería ser comparada con la contraseña hasheada).
-     * @return true si las credenciales son válidas, false en caso contrario.
-     */
-    public boolean validarCredenciales(String usuario, String contrasena) {
-        // La comparación de contraseña debe ser contra la versión hasheada.
-        // Aquí se asume que this.contraseña ya está (o debería estar) hasheada.
-        // Y la 'contrasena' entrante también debería ser hasheada antes de comparar.
-        // O, si this.contraseña está en texto plano (NO RECOMENDADO), entonces se compara directo.
-        return this.nombreUsuario != null && this.contraseña != null &&
-               this.nombreUsuario.equals(usuario) && this.contraseña.equals(contrasena);
-    }
-
 
     @Override
     public String toString() {

@@ -7,6 +7,9 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Adaptador de Gson para la serialización y deserialización de la jerarquía de la clase Empleado.
+ */
 public class EmpleadoTypeAdapter implements JsonDeserializer<Empleado>, JsonSerializer<Empleado> {
 
     @Override
@@ -16,7 +19,6 @@ public class EmpleadoTypeAdapter implements JsonDeserializer<Empleado>, JsonSeri
         JsonObject jsonObject = json.getAsJsonObject();
         String tipo = jsonObject.get("tipo").getAsString();
 
-        // Datos comunes
         String numEmpleado = jsonObject.get("numEmpleado").getAsString();
         String nombre = jsonObject.get("nombre").getAsString();
         String direccion = jsonObject.get("direccion").getAsString();
@@ -71,7 +73,6 @@ public class EmpleadoTypeAdapter implements JsonDeserializer<Empleado>, JsonSeri
     public JsonElement serialize(Empleado src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
 
-        // Propiedades comunes
         jsonObject.addProperty("numEmpleado", src.getNumEmpleado());
         jsonObject.addProperty("nombre", src.getNombre());
         jsonObject.addProperty("direccion", src.getDireccion());
@@ -82,7 +83,6 @@ public class EmpleadoTypeAdapter implements JsonDeserializer<Empleado>, JsonSeri
         jsonObject.addProperty("nombreUsuario", src.getNombreUsuario());
         jsonObject.addProperty("contraseña", src.getContraseña());
 
-        // Propiedades específicas según el tipo
         if (src instanceof Administrativo) {
             Administrativo admin = (Administrativo) src;
             jsonObject.addProperty("tipo", "ADMINISTRATIVO");

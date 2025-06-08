@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * DAO para la gestión de aerolíneas.
+ */
 public class AerolineaDAO extends GsonDAO<Aerolinea> {
     private static final String NOMBRE_ARCHIVO = "datos/aerolineas.json";
 
@@ -35,13 +38,15 @@ public class AerolineaDAO extends GsonDAO<Aerolinea> {
         }
         return aerolineaOpt.get();
     }
-    
+
     /**
      * No aplicable para Aerolinea, ya que su ID es numérico.
      * Lanza UnsupportedOperationException.
+     * @param id El ID de la aerolínea (no utilizado).
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public Aerolinea obtenerPorId(String id) throws DatosInvalidosException {
+    public Aerolinea obtenerPorId(String id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("El ID de Aerolinea es numérico. Use obtenerPorId(int).");
     }
 
@@ -52,11 +57,9 @@ public class AerolineaDAO extends GsonDAO<Aerolinea> {
             throw new DatosInvalidosException("La aerolínea no puede ser nula.");
         }
         List<Aerolinea> aerolineas = obtenerTodos();
-        // Asignar nuevo ID si es una nueva aerolínea (ID es 0 o no establecido)
-        if (aerolinea.getId() == 0) { // Asumiendo que 0 indica nuevo objeto
+        if (aerolinea.getId() == 0) {
             aerolinea.setId(obtenerSiguienteIdNumerico());
         } else {
-            // Verificar si ya existe una aerolínea con ese ID para evitar duplicados al "guardar" una existente.
             boolean existe = aerolineas.stream().anyMatch(a -> a.getId() == aerolinea.getId());
             if (existe) {
                 throw new DatosInvalidosException("Ya existe una aerolínea con el ID " + aerolinea.getId() + ". Use actualizar en su lugar.");
@@ -95,14 +98,16 @@ public class AerolineaDAO extends GsonDAO<Aerolinea> {
         }
         guardarDatos(aerolineas);
     }
-    
+
     /**
      * No aplicable para Aerolinea, ya que su ID es numérico.
      * Lanza UnsupportedOperationException.
+     * @param id El ID de la aerolínea (no utilizado).
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public void eliminar(String id) throws DatosInvalidosException {
-         throw new UnsupportedOperationException("El ID de Aerolinea es numérico. Use eliminar(int).");
+    public void eliminar(String id) throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("El ID de Aerolinea es numérico. Use eliminar(int).");
     }
 
 
@@ -113,11 +118,17 @@ public class AerolineaDAO extends GsonDAO<Aerolinea> {
                     .mapToInt(Aerolinea::getId)
                     .max()
                     .orElse(0) + 1;
-        } catch (NoSuchElementException e) { // Para el caso de .max() en lista vacía antes de orElse
+        } catch (NoSuchElementException e) {
             return 1;
         }
     }
 
+    /**
+     * Obtiene una aerolínea por su nombre.
+     * @param nombre El nombre de la aerolínea.
+     * @return La aerolínea encontrada.
+     * @throws DatosInvalidosException si el nombre es nulo o vacío, o si no se encuentra la aerolínea.
+     */
     public Aerolinea obtenerPorNombre(String nombre) throws DatosInvalidosException {
         if (nombre == null || nombre.trim().isEmpty()) {
             throw new DatosInvalidosException("El nombre para buscar no puede ser vacío.");

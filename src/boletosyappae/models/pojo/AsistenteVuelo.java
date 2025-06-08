@@ -6,17 +6,11 @@ import java.util.List;
 
 /**
  * Clase para empleados Asistentes de Vuelo.
- * Ajustada para coincidir con los requerimientos del PDF y la estructura del JSON.
- *
- * Requerimientos del PDF para Asistente de Vuelo (además de los de Empleado):
- * - Número de horas de asistencia de vuelo (mapeado a numHorasAsistidas)
- * - Número de idiomas que hablan (mapeado a idiomas)
  */
 public class AsistenteVuelo extends Empleado {
-    private int numHorasAsistidas; // Número de horas de asistencia (según PDF y JSON)
-    private List<Idioma> idiomas; // Lista de idiomas que habla (según PDF y JSON)
+    private int numHorasAsistidas;
+    private List<Idioma> idiomas;
 
-    // Constructores
     public AsistenteVuelo() {
         super();
         this.idiomas = new ArrayList<>();
@@ -31,7 +25,6 @@ public class AsistenteVuelo extends Empleado {
         this.idiomas = (idiomas != null) ? idiomas : new ArrayList<>();
     }
 
-    // Getters y Setters
     public int getNumHorasAsistidas() {
         return numHorasAsistidas;
     }
@@ -47,37 +40,6 @@ public class AsistenteVuelo extends Empleado {
     public void setIdiomas(List<Idioma> idiomas) {
         this.idiomas = idiomas;
     }
-
-    /**
-     * Verifica si el asistente habla un idioma específico.
-     * @param idioma El idioma a verificar (como String, sensible a mayúsculas/minúsculas).
-     * @return true si el asistente habla el idioma, false en caso contrario.
-     */
-    public boolean hablaIdioma(String idioma) {
-        if (idiomas == null || idioma == null || idioma.trim().isEmpty()) {
-            return false;
-        }
-        for (Idioma idiomaAsistente : idiomas) {
-            // Comparar el nombre del enum con el string proporcionado.
-            // Idioma.valueOf(idioma.toUpperCase()) podría usarse si se espera que 'idioma' sea un nombre de enum válido.
-            if (idiomaAsistente.name().equalsIgnoreCase(idioma.trim())) {
-                return true;
-            }
-        }
-        return false;
-    }
-     /**
-     * Verifica si el asistente habla un idioma específico (usando el enum).
-     * @param idioma El enum Idioma a verificar.
-     * @return true si el asistente habla el idioma, false en caso contrario.
-     */
-    public boolean hablaIdioma(Idioma idioma) {
-        if (idiomas == null || idioma == null) {
-            return false;
-        }
-        return idiomas.contains(idioma);
-    }
-
 
     @Override
     public String toString() {

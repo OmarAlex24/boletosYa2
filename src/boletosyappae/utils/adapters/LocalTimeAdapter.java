@@ -5,6 +5,9 @@ import java.lang.reflect.Type;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * Adaptador de Gson para la serialización y deserialización de la clase LocalTime.
+ */
 public class LocalTimeAdapter implements JsonSerializer<LocalTime>, JsonDeserializer<LocalTime> {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");

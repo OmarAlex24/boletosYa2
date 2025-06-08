@@ -29,12 +29,10 @@ public abstract class Empleado {
         this.genero = genero;
         this.sueldo = sueldo;
         this.nombreUsuario = nombreUsuario;
-        this.contraseña = contraseña; // Se asigna directamente la contraseña (hasheada o no)
+        this.contraseña = contraseña;
         this.correo = correo;
         this.tipo = tipo;
     }
-
-    // --- Getters y Setters ---
 
     public String getNumEmpleado() {
         return numEmpleado;
@@ -97,9 +95,8 @@ public abstract class Empleado {
     }
 
     /**
-     * Asigna la contraseña. Este método NO la encripta.
-     * La lógica de encriptación debe realizarse ANTES de llamar a este método.
-     * @param contrasena La contraseña (generalmente ya hasheada) a asignar.
+     * Asigna la contraseña.
+     * @param contrasena La contraseña a asignar.
      */
     public void setContraseña(String contrasena) {
         this.contraseña = contrasena;

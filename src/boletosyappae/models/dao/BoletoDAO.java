@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * DAO para la gestión de boletos.
+ */
 public class BoletoDAO extends GsonDAO<Boleto> {
     private static final String NOMBRE_ARCHIVO = "datos/boletos.json";
 
@@ -23,9 +26,11 @@ public class BoletoDAO extends GsonDAO<Boleto> {
     /**
      * No aplicable para Boleto, ya que su ID es String ("idBoleto").
      * Lanza UnsupportedOperationException.
+     * @param id El ID del boleto (no utilizado).
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public Boleto obtenerPorId(int id) throws DatosInvalidosException {
+    public Boleto obtenerPorId(int id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("El ID de Boleto es String. Use obtenerPorId(String).");
     }
 
@@ -86,9 +91,11 @@ public class BoletoDAO extends GsonDAO<Boleto> {
     /**
      * No aplicable para Boleto, ya que su ID es String ("idBoleto").
      * Lanza UnsupportedOperationException.
+     * @param id El ID del boleto (no utilizado).
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public void eliminar(int id) throws DatosInvalidosException {
+    public void eliminar(int id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("El ID de Boleto es String. Use eliminar(String).");
     }
 
@@ -106,14 +113,20 @@ public class BoletoDAO extends GsonDAO<Boleto> {
     }
 
     /**
-     * Los IDs de Boleto son Strings (ej. "BOL001") y no son numéricos secuenciales simples.
-     * La generación de estos IDs debe manejarse en la lógica de negocio.
+     * Los IDs de Boleto son Strings y no son numéricos secuenciales simples.
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public int obtenerSiguienteIdNumerico() throws DatosInvalidosException {
-         throw new UnsupportedOperationException("Los IDs de Boleto son Strings y no se generan numéricamente de forma secuencial simple por este DAO.");
+    public int obtenerSiguienteIdNumerico() throws UnsupportedOperationException {
+        throw new UnsupportedOperationException("Los IDs de Boleto son Strings y no se generan numéricamente de forma secuencial simple por este DAO.");
     }
 
+    /**
+     * Obtiene una lista de boletos por el ID del vuelo.
+     * @param idVuelo El ID del vuelo.
+     * @return Una lista de boletos para el vuelo especificado.
+     * @throws DatosInvalidosException si el ID del vuelo es nulo o vacío.
+     */
     public List<Boleto> obtenerPorVuelo(String idVuelo) throws DatosInvalidosException {
         if (idVuelo == null || idVuelo.trim().isEmpty()) {
             throw new DatosInvalidosException("El ID del vuelo no puede ser nulo o vacío.");
@@ -123,8 +136,14 @@ public class BoletoDAO extends GsonDAO<Boleto> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene una lista de boletos por el número de cliente.
+     * @param numCliente El número de cliente.
+     * @return Una lista de boletos para el cliente especificado.
+     * @throws DatosInvalidosException si el número de cliente es nulo o vacío.
+     */
     public List<Boleto> obtenerPorCliente(String numCliente) throws DatosInvalidosException {
-         if (numCliente == null || numCliente.trim().isEmpty()) {
+        if (numCliente == null || numCliente.trim().isEmpty()) {
             throw new DatosInvalidosException("El número de cliente no puede ser nulo o vacío.");
         }
         return obtenerTodos().stream()
@@ -132,15 +151,27 @@ public class BoletoDAO extends GsonDAO<Boleto> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene una lista de boletos por su estado.
+     * @param estado El estado del boleto.
+     * @return Una lista de boletos que coinciden con el estado especificado.
+     * @throws DatosInvalidosException si el estado es nulo.
+     */
     public List<Boleto> obtenerPorEstado(EstadoBoleto estado) throws DatosInvalidosException {
         if (estado == null) {
-             throw new DatosInvalidosException("El estado del boleto no puede ser nulo.");
+            throw new DatosInvalidosException("El estado del boleto no puede ser nulo.");
         }
         return obtenerTodos().stream()
                 .filter(b -> b.getEstado() == estado)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Cuenta el número de boletos para un vuelo específico.
+     * @param idVuelo El ID del vuelo.
+     * @return El número de boletos para el vuelo.
+     * @throws DatosInvalidosException si el ID del vuelo es nulo o vacío.
+     */
     public int contarBoletosPorVuelo(String idVuelo) throws DatosInvalidosException {
         if (idVuelo == null || idVuelo.trim().isEmpty()) {
             throw new DatosInvalidosException("El ID del vuelo para contar boletos no puede ser nulo o vacío.");
@@ -150,14 +181,21 @@ public class BoletoDAO extends GsonDAO<Boleto> {
                 .count();
     }
 
+    /**
+     * Verifica si existe un boleto para un asiento específico en un vuelo.
+     * @param idVuelo El ID del vuelo.
+     * @param numeroAsiento El número del asiento.
+     * @return `true` si el asiento está ocupado, `false` en caso contrario.
+     * @throws DatosInvalidosException si el ID del vuelo o el número de asiento son nulos o vacíos.
+     */
     public boolean existeBoletoParaAsiento(String idVuelo, String numeroAsiento) throws DatosInvalidosException {
-         if (idVuelo == null || idVuelo.trim().isEmpty() || numeroAsiento == null || numeroAsiento.trim().isEmpty()) {
+        if (idVuelo == null || idVuelo.trim().isEmpty() || numeroAsiento == null || numeroAsiento.trim().isEmpty()) {
             throw new DatosInvalidosException("El ID del vuelo y el número de asiento no pueden ser nulos o vacíos.");
         }
         return obtenerTodos().stream()
                 .anyMatch(b -> b.getIdVuelo().equalsIgnoreCase(idVuelo.trim()) &&
-                        b.getNumAsiento() != null && 
+                        b.getNumAsiento() != null &&
                         b.getNumAsiento().equalsIgnoreCase(numeroAsiento.trim()) &&
-                        (b.getEstado() == EstadoBoleto.CONFIRMADO || b.getEstado() == EstadoBoleto.PENDIENTE)); // Considerar PENDIENTE también
+                        (b.getEstado() == EstadoBoleto.CONFIRMADO || b.getEstado() == EstadoBoleto.PENDIENTE));
     }
 }

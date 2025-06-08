@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 
 /**
  * Controlador para la ventana principal de la aplicación.
+ * Maneja la navegación entre las diferentes secciones y el cierre de sesión.
  */
 public class FXMLVentanaPrincipalController implements Initializable {
 
@@ -46,10 +47,22 @@ public class FXMLVentanaPrincipalController implements Initializable {
 
     private Empleado empleadoLogueado;
 
+    /**
+     * Inicializa el controlador.
+     *
+     * @param url La ubicación utilizada para resolver rutas relativas.
+     * @param rb Los recursos utilizados para localizar el objeto raíz.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
     }
 
+    /**
+     * Inicializa la sesión del usuario en la ventana principal.
+     * Muestra el nombre y rol del empleado y configura la UI según sus permisos.
+     *
+     * @param empleado El empleado que ha iniciado sesión.
+     */
     public void inicializarSesion(Empleado empleado) {
         this.empleadoLogueado = empleado;
         if (empleadoLogueado != null) {
@@ -63,6 +76,11 @@ public class FXMLVentanaPrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Configura la visibilidad y accesibilidad de los botones del menú según el rol del empleado.
+     *
+     * @param tipoEmpleado El rol del empleado logueado.
+     */
     private void configurarUIPorRol(TipoEmpleado tipoEmpleado) {
         boolean esAdmin = (tipoEmpleado == TipoEmpleado.ADMINISTRATIVO);
         btnEmpleados.setDisable(!esAdmin);
@@ -73,16 +91,31 @@ public class FXMLVentanaPrincipalController implements Initializable {
         btnComprarBoletos.setDisable(false);
     }
 
+    /**
+     * Maneja el evento de clic del botón "Empleados", cargando la vista correspondiente.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleEmpleados(ActionEvent event) {
         cargarVista("/boletosyappae/views/empleado/FXMLEmpleados.fxml");
     }
 
+    /**
+     * Maneja el evento de clic del botón "Aerolíneas", cargando la vista correspondiente.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleAerolineas(ActionEvent event) {
         cargarVista("/boletosyappae/views/aerolinea/FXMLAerolineas.fxml");
     }
 
+    /**
+     * Carga una vista FXML en el panel central del BorderPane principal.
+     *
+     * @param fxmlPath La ruta al archivo FXML a cargar.
+     */
     private void cargarVista(String fxmlPath) {
         try {
             Parent vista = FXMLLoader.load(getClass().getResource(fxmlPath));
@@ -93,30 +126,66 @@ public class FXMLVentanaPrincipalController implements Initializable {
         }
     }
 
+    /**
+     * Deshabilita todos los elementos de la interfaz de usuario.
+     *
+     * @param deshabilitar `true` para deshabilitar, `false` para habilitar.
+     */
     private void deshabilitarTodaLaUI(boolean deshabilitar) {
-        // Implementación...
+        btnEmpleados.setDisable(deshabilitar);
+        btnAerolineas.setDisable(deshabilitar);
+        btnAviones.setDisable(deshabilitar);
+        btnVuelos.setDisable(deshabilitar);
+        btnGestionClientes.setDisable(deshabilitar);
+        btnComprarBoletos.setDisable(deshabilitar);
     }
 
+    /**
+     * Maneja el evento de clic del botón "Aviones", cargando la vista correspondiente.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleAviones(ActionEvent event) {
         cargarVista("/boletosyappae/views/avion/FXMLAviones.fxml");
     }
 
+    /**
+     * Maneja el evento de clic del botón "Vuelos", cargando la vista correspondiente.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleVuelos(ActionEvent event) {
         cargarVista("/boletosyappae/views/vuelo/FXMLVuelos.fxml");
     }
 
+    /**
+     * Maneja el evento de clic del botón "Gestionar Clientes", cargando la vista correspondiente.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleGestionClientes(ActionEvent event) {
         cargarVista("/boletosyappae/views/cliente/FXMLClientes.fxml");
     }
 
+    /**
+     * Maneja el evento de clic del botón "Comprar Boletos", cargando la vista correspondiente.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleComprarBoletos(ActionEvent event) {
         cargarVista("/boletosyappae/views/boleto/FXMLCompraBoleto.fxml");
     }
 
+    /**
+     * Maneja el evento de clic del botón "Cerrar Sesión".
+     * Cierra la sesión actual y regresa a la ventana de inicio de sesión.
+     *
+     * @param event El evento de acción.
+     */
     @FXML
     private void handleCerrarSesion(ActionEvent event) {
         if (Utilidad.mostrarAlertaConfirmacion("Cerrar Sesión", "¿Estás seguro de que deseas cerrar la sesión?")) {

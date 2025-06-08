@@ -8,6 +8,9 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * DAO para la gestión de aviones.
+ */
 public class AvionDAO extends GsonDAO<Avion> {
     private static final String NOMBRE_ARCHIVO = "datos/aviones.json";
 
@@ -36,7 +39,7 @@ public class AvionDAO extends GsonDAO<Avion> {
         }
         return avionOpt.get();
     }
-    
+
     /**
      * Obtiene un avión por su identificador de negocio (String, ej: "A001").
      * @param identificador El identificador String del avión.
@@ -64,19 +67,16 @@ public class AvionDAO extends GsonDAO<Avion> {
             throw new DatosInvalidosException("El avión no puede ser nulo.");
         }
         List<Avion> aviones = obtenerTodos();
-        
-        // Verificar si ya existe un avión con ese identificador String
+
         boolean identificadorExiste = aviones.stream()
-                                     .anyMatch(a -> a.getIdentificador().equalsIgnoreCase(avion.getIdentificador()));
+                .anyMatch(a -> a.getIdentificador().equalsIgnoreCase(avion.getIdentificador()));
         if (identificadorExiste) {
-             throw new DatosInvalidosException("Ya existe un avión con el identificador " + avion.getIdentificador() + ".");
+            throw new DatosInvalidosException("Ya existe un avión con el identificador " + avion.getIdentificador() + ".");
         }
 
-        // Asignar nuevo ID numérico si es un nuevo avión (ID es 0 o no establecido)
-        if (avion.getId() == 0) { 
+        if (avion.getId() == 0) {
             avion.setId(obtenerSiguienteIdNumerico());
         } else {
-            // Verificar si ya existe un avión con ese ID numérico para evitar duplicados.
             boolean idNumericoExiste = aviones.stream().anyMatch(a -> a.getId() == avion.getId());
             if (idNumericoExiste) {
                 throw new DatosInvalidosException("Ya existe un avión con el ID numérico " + avion.getId() + ". Use actualizar en su lugar o revise la asignación de ID.");
@@ -94,13 +94,11 @@ public class AvionDAO extends GsonDAO<Avion> {
         List<Avion> aviones = obtenerTodos();
         boolean encontrado = false;
         for (int i = 0; i < aviones.size(); i++) {
-            // Actualizar por el ID numérico interno
             if (aviones.get(i).getId() == avion.getId()) {
-                // Opcional: verificar que el identificador String no se duplique con otro avión existente
                 final String identificadorActualizar = avion.getIdentificador();
                 final int idActualizar = avion.getId();
                 boolean otroConMismoIdentificador = aviones.stream()
-                    .anyMatch(a -> a.getIdentificador().equalsIgnoreCase(identificadorActualizar) && a.getId() != idActualizar);
+                        .anyMatch(a -> a.getIdentificador().equalsIgnoreCase(identificadorActualizar) && a.getId() != idActualizar);
                 if (otroConMismoIdentificador) {
                     throw new DatosInvalidosException("Otro avión ya existe con el identificador " + identificadorActualizar);
                 }
@@ -127,7 +125,7 @@ public class AvionDAO extends GsonDAO<Avion> {
         }
         guardarDatos(aviones);
     }
-    
+
     /**
      * Elimina un avión por su identificador String.
      */
@@ -146,9 +144,9 @@ public class AvionDAO extends GsonDAO<Avion> {
 
     @Override
     public int obtenerSiguienteIdNumerico() throws DatosInvalidosException {
-         try {
+        try {
             return obtenerTodos().stream()
-                    .mapToInt(Avion::getId) // Usa el ID numérico interno
+                    .mapToInt(Avion::getId)
                     .max()
                     .orElse(0) + 1;
         } catch (NoSuchElementException e) {
@@ -156,15 +154,27 @@ public class AvionDAO extends GsonDAO<Avion> {
         }
     }
 
+    /**
+     * Obtiene una lista de aviones por el ID de la aerolínea.
+     * @param idAerolinea El ID de la aerolínea.
+     * @return Una lista de aviones pertenecientes a la aerolínea.
+     * @throws DatosInvalidosException si hay un problema al cargar los datos.
+     */
     public List<Avion> obtenerPorAerolinea(int idAerolinea) throws DatosInvalidosException {
         return obtenerTodos().stream()
                 .filter(a -> a.getIdAerolinea() == idAerolinea)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Obtiene una lista de aviones por su modelo.
+     * @param modelo El modelo del avión.
+     * @return Una lista de aviones que coinciden con el modelo.
+     * @throws DatosInvalidosException si hay un problema al cargar los datos.
+     */
     public List<Avion> obtenerPorModelo(String modelo) throws DatosInvalidosException {
         if (modelo == null || modelo.trim().isEmpty()) {
-            return obtenerTodos(); // O lanzar excepción si se prefiere
+            return obtenerTodos();
         }
         String modeloBusqueda = modelo.toLowerCase().trim();
         return obtenerTodos().stream()

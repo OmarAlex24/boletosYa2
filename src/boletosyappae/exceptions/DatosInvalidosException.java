@@ -3,7 +3,7 @@ package boletosyappae.exceptions;
 /**
  * Excepción personalizada para errores relacionados con datos inválidos o corruptos.
  */
-public class DatosInvalidosException extends Exception { // Cambiado a Exception para que sea una checked exception si se prefiere
+public class DatosInvalidosException extends Exception {
 
     /**
      * Constructor que acepta un mensaje de error.

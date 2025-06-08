@@ -3,8 +3,7 @@ package boletosyappae.models.pojo;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Clase para representar una Aerolínea. Modelo de datos corregido para
- * coincidir con el JSON y simplificado.
+ * Clase para representar una Aerolínea.
  */
 public class Aerolinea {
 
@@ -29,7 +28,7 @@ public class Aerolinea {
     }
 
     public Aerolinea(int id, String numeroIdentificacion, String nombre, String direccion,
-            String personaContacto, String numeroTelefonico) {
+                     String personaContacto, String numeroTelefonico) {
         this.id = id;
         this.numeroIdentificacion = numeroIdentificacion;
         this.nombre = nombre;

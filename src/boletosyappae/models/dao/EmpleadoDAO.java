@@ -23,11 +23,9 @@ public class EmpleadoDAO extends GsonDAO<Empleado> {
      * Autentica a un usuario comparando el hash de la contraseña ingresada.
      *
      * @param nombreUsuario El nombre de usuario.
-     * @param contrasenaPlana La contraseña en texto plano ingresada por el
-     * usuario.
+     * @param contrasenaPlana La contraseña en texto plano ingresada por el usuario.
      * @return El objeto Empleado si la autenticación es exitosa.
-     * @throws CredencialesInvalidasException si las credenciales son
-     * incorrectas.
+     * @throws CredencialesInvalidasException si las credenciales son incorrectas.
      * @throws DatosInvalidosException si hay un problema al cargar los datos.
      */
     public Empleado autenticarUsuario(String nombreUsuario, String contrasenaPlana)
@@ -106,16 +104,28 @@ public class EmpleadoDAO extends GsonDAO<Empleado> {
         guardarDatos(empleados);
     }
 
+    /**
+     * No aplicable para Empleado, ya que su ID es String.
+     * @throws UnsupportedOperationException siempre.
+     */
     @Override
     public Empleado obtenerPorId(int id) {
         throw new UnsupportedOperationException("El ID de Empleado es String. Use obtenerPorId(String).");
     }
 
+    /**
+     * No aplicable para Empleado, ya que su ID es String.
+     * @throws UnsupportedOperationException siempre.
+     */
     @Override
     public void eliminar(int id) {
         throw new UnsupportedOperationException("El ID de Empleado es String. Use eliminar(String).");
     }
 
+    /**
+     * No aplicable para Empleado, ya que su ID es String.
+     * @throws UnsupportedOperationException siempre.
+     */
     @Override
     public int obtenerSiguienteIdNumerico() {
         throw new UnsupportedOperationException("Los IDs de Empleado son Strings y no se generan numéricamente.");

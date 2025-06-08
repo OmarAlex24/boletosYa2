@@ -5,6 +5,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase para representar un Vuelo.
+ */
 public class Vuelo {
 
     private String idVuelo;
@@ -26,7 +29,6 @@ public class Vuelo {
         this.asistentesVuelo = new ArrayList<>();
     }
 
-    // Getters y Setters
     public String getIdVuelo() {
         return idVuelo;
     }
@@ -131,7 +133,6 @@ public class Vuelo {
         this.asistentesVuelo = asistentesVuelo;
     }
 
-    // Método extra para la vista de tabla
     public String getRuta() {
         return this.ciudadSalida + " -> " + this.ciudadLlegada;
     }

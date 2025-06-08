@@ -3,8 +3,7 @@ package boletosyappae.models.pojo;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Clase para representar un Avión. Modelo de datos corregido para mapear
- * correctamente desde el JSON.
+ * Clase para representar un Avión.
  */
 public class Avion {
 
@@ -18,7 +17,6 @@ public class Avion {
     private double peso;
     private int idAerolinea;
 
-    // Constructores
     public Avion() {
     }
 
@@ -30,7 +28,6 @@ public class Avion {
         this.idAerolinea = idAerolinea;
     }
 
-    // --- Getters y Setters ---
     public int getId() {
         return id;
     }

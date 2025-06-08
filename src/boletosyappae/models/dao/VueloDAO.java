@@ -4,9 +4,11 @@ import boletosyappae.exceptions.DatosInvalidosException;
 import boletosyappae.models.pojo.Vuelo;
 import com.google.gson.reflect.TypeToken;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
+/**
+ * DAO para la gestión de vuelos.
+ */
 public class VueloDAO extends GsonDAO<Vuelo> {
     private static final String NOMBRE_ARCHIVO = "datos/vuelos.json";
 
@@ -18,13 +20,15 @@ public class VueloDAO extends GsonDAO<Vuelo> {
     public List<Vuelo> obtenerTodos() throws DatosInvalidosException {
         return cargarDatos();
     }
-    
+
     /**
      * No aplicable para Vuelo, ya que su ID es String ("idVuelo").
      * Lanza UnsupportedOperationException.
+     * @param id El ID del vuelo (no utilizado).
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public Vuelo obtenerPorId(int id) throws DatosInvalidosException {
+    public Vuelo obtenerPorId(int id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("El ID de Vuelo es String. Use obtenerPorId(String).");
     }
 
@@ -55,7 +59,6 @@ public class VueloDAO extends GsonDAO<Vuelo> {
             throw new DatosInvalidosException("El vuelo o su ID no pueden ser nulos o vacíos.");
         }
         List<Vuelo> vuelos = obtenerTodos();
-        // Verificar si ya existe un vuelo con ese ID
         boolean existe = vuelos.stream().anyMatch(v -> v.getIdVuelo().equalsIgnoreCase(vuelo.getIdVuelo()));
         if (existe) {
             throw new DatosInvalidosException("Ya existe un vuelo con el ID " + vuelo.getIdVuelo() + ". Use actualizar en su lugar.");
@@ -83,19 +86,21 @@ public class VueloDAO extends GsonDAO<Vuelo> {
         }
         guardarDatos(vuelos);
     }
-    
+
     /**
      * No aplicable para Vuelo, ya que su ID es String ("idVuelo").
      * Lanza UnsupportedOperationException.
+     * @param id El ID del vuelo (no utilizado).
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public void eliminar(int id) throws DatosInvalidosException {
+    public void eliminar(int id) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("El ID de Vuelo es String. Use eliminar(String).");
     }
 
     @Override
     public void eliminar(String idVuelo) throws DatosInvalidosException {
-         if (idVuelo == null || idVuelo.trim().isEmpty()) {
+        if (idVuelo == null || idVuelo.trim().isEmpty()) {
             throw new DatosInvalidosException("El ID del vuelo para eliminar no puede ser nulo o vacío.");
         }
         List<Vuelo> vuelos = obtenerTodos();
@@ -107,21 +112,11 @@ public class VueloDAO extends GsonDAO<Vuelo> {
     }
 
     /**
-     * Los IDs de Vuelo son Strings (ej. "UA001") y no son numéricos secuenciales simples.
-     * La generación de estos IDs debe manejarse en la lógica de negocio.
-     * Este método lanza UnsupportedOperationException.
+     * Los IDs de Vuelo son Strings y no son numéricos secuenciales simples.
+     * @throws UnsupportedOperationException siempre.
      */
     @Override
-    public int obtenerSiguienteIdNumerico() throws DatosInvalidosException {
+    public int obtenerSiguienteIdNumerico() throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Los IDs de Vuelo son Strings y no se generan numéricamente de forma secuencial simple por este DAO.");
-        // Si se necesitara generar algo como "VX" + número:
-        // List<Vuelo> vuelos = obtenerTodos();
-        // int maxNum = vuelos.stream()
-        //         .map(Vuelo::getIdVuelo)
-        //         .filter(id -> id.matches("VX\\d+")) // Asumiendo un prefijo y luego números
-        //         .mapToInt(id -> Integer.parseInt(id.substring(2))) // Extrae el número
-        //         .max()
-        //         .orElse(0);
-        // return maxNum + 1; // Solo devuelve el número, el formateo sería externo.
     }
 }

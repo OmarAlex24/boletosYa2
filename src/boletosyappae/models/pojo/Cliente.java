@@ -6,36 +6,22 @@ import java.util.List;
 
 /**
  * Clase para representar un Cliente.
- * Ajustada para coincidir con los requerimientos del PDF y la estructura del JSON.
- *
- * Requerimientos del PDF para Cliente:
- * - Nombre o nombres (mapeado a nombres)
- * - Apellidos (mapeado a apellidos)
- * - Nacionalidad
- * - Fecha de nacimiento (mapeado a fechaNacimiento)
- * - Pueden comprar boletos en uno o varios vuelos (relación con Boleto)
- * - El JSON `clientes.json` usa `numCliente` como String identificador.
  */
 public class Cliente {
-    // ID interno para el DAO. El JSON usa `numCliente` (String).
-    // Se puede usar `id` (int) para el DAO y `numCliente` (String) como el identificador de negocio.
-    private int id; // ID numérico interno para el DAO
-    private String numCliente; // Identificador del cliente (String, como en JSON)
-    private String nombres; // Nombres del cliente (según PDF y JSON (nombre, paterno, materno))
-    private String apellidos; // Apellidos del cliente (concatenación de paterno y materno del JSON)
-    private String nacionalidad; // Nacionalidad (según PDF y JSON)
-    private LocalDate fechaNacimiento; // Fecha de nacimiento (según PDF y JSON (fechaNac))
+    private int id;
+    private String numCliente;
+    private String nombres;
+    private String apellidos;
+    private String nacionalidad;
+    private LocalDate fechaNacimiento;
     private String telefono;
     private String email;
     private List<String> idsBoletosComprados;
 
-
-    // Constructores
     public Cliente() {
         this.idsBoletosComprados = new ArrayList<>();
     }
-    
-    // Constructor completo incluyendo id interno del DAO.
+
     public Cliente(int id, String numCliente, String nombres, String apellidos,
                    String nacionalidad, LocalDate fechaNacimiento, String telefono, String email) {
         this.id = id;
@@ -49,7 +35,6 @@ public class Cliente {
         this.email = email;
     }
 
-    // Constructor sin id interno, para cuando el DAO lo asigna.
     public Cliente(String numCliente, String nombres, String apellidos,
                    String nacionalidad, LocalDate fechaNacimiento, String telefono, String email) {
         this.numCliente = numCliente;
@@ -62,8 +47,6 @@ public class Cliente {
         this.email = email;
     }
 
-
-    // Getters y setters
     public int getId() {
         return id;
     }
